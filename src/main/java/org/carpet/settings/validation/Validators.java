@@ -130,4 +130,21 @@ public final class Validators {
 			return "Must be between 0 and 1";
 		}
 	}
+
+	public static class OptionalProbability<T extends Number> extends Validator<T> {
+		@Override
+		//#if MC>=11300
+		//$$ 		public T validate(CommandSourceStack source, CarpetRule<T> currentRule, T newValue, String string) {
+		//#else
+		public T validate(CommandSource source, CarpetRule<T> currentRule, T newValue, String string) {
+			//#endif
+			// <0 = default
+			return newValue.doubleValue() <= 1 ? newValue : null;
+		}
+
+		@Override
+		public String description() {
+			return "Must be between 0 and 1";
+		}
+	}
 }

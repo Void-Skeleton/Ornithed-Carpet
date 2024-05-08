@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(TntBlock.class)
-public class TntBlockMixin {
+public abstract class TntBlockMixin {
 	@Redirect(
 		method = "onAdded",
 		at = @At(

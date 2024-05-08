@@ -125,12 +125,38 @@ public class CarpetSettings {
 	)
 	public static int tileTickLimit = 65536;
 
-	// -----------------------------
-	//              TNT
-	// -----------------------------
-	@Rule(desc = "Explosions won't destroy blocks", categories = {RuleCategory.CREATIVE, RuleCategory.TNT})
+	/*
+		 _____  _   _  _____
+		|_   _|| \ | ||_   _|
+		  | |  |  \| |  | |
+		  | |  | |\  |  | |
+		  |_|  |_| \_|  |_|
+	 */
+	// TNT - This section contains all the TNT related settings
+
+	@Rule(desc = "Explosions won't destroy blocks",
+		categories = {RuleCategory.CREATIVE, RuleCategory.TNT})
 	public static boolean explosionNoBlockDamage = false;
 
-	@Rule(desc = "TNT doesn't update when placed against a power source", categories = {RuleCategory.CREATIVE, RuleCategory.TNT})
+	@Rule(desc = "TNT doesn't update when placed against a power source",
+		categories = {RuleCategory.CREATIVE, RuleCategory.TNT})
 	public static boolean tntDoNotUpdate = false;
+
+	@Rule(desc = "Fix random angle of TNT for debugging; unit in radians, <0 = vanilla behavior",
+		categories = {RuleCategory.CREATIVE, RuleCategory.TNT},
+		options = {"-1.0"}, strict = false)
+	public static double tntFixedRandomAngle = -1.0;
+
+	@Rule(desc = "Fix random range of TNT to 0.7+0.6*setting, <0 = vanilla behavior",
+		categories = {RuleCategory.CREATIVE, RuleCategory.TNT},
+		options = {"-1.0"}, strict = false,
+		validators = Validators.OptionalProbability.class)
+	public static float tntFixedRandomRange = -1.0f;
+
+	@Rule(desc = "Changes default tnt fuse.",
+		categories = {RuleCategory.CREATIVE, RuleCategory.TNT},
+		validators = Validators.NonNegativeNumber.class,
+		options = {"70", "80", "100"},
+		strict = false)
+	public static int tntFuseLength = 80;
 }
