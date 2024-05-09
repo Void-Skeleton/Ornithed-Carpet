@@ -1,4 +1,4 @@
-package org.carpet.mixins.rule.creativeNoClip;
+package org.carpet.mixins.rule.client.creativeNoClip;
 
 import org.carpet.settings.CarpetSettings;
 import net.minecraft.client.Minecraft;

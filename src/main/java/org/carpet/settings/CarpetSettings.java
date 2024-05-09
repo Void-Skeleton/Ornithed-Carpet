@@ -181,6 +181,9 @@ public class CarpetSettings {
 		strict = false)
 	public static int tntFuseLength = 80;
 
+	@Rule(desc = "TNT no longer receives initial momentum", categories = {RuleCategory.TNT, RuleCategory.YEET})
+	public static boolean yeetTntInitialMotion = false;
+
 	/*
 		 ____                        _         _    _
 		|  _ \   ___   _ __   _   _ | |  __ _ | |_ (_)  ___   _ __
@@ -230,20 +233,29 @@ public class CarpetSettings {
 	 */
 	// CREATIVE - This sections contains rule solely for the purpose of creative mode testing and should never be on
 	//            for survival servers
-	@Rule(desc = "Controls the circumstances in which hoppers don't consume items when transferring out",
+	@Rule(desc = "Controls the circumstances in which dispensers don't consume items when firing",
 		categories = RuleCategory.CREATIVE,
 		options = {"off", "wool", "all"})
-	public static String hopperNoItemCost = "off";
+	public static String dispenserNoItemCost = "off";
 
 	@Rule(desc = "Controls the circumstances in which droppers don't consume items when firing",
 		categories = RuleCategory.CREATIVE,
 		options = {"off", "wool", "all"})
 	public static String dropperNoItemCost = "off";
 
-	@Rule(desc = "Controls the circumstances in which dispensers don't consume items when firing",
+	@Rule(desc = "/fill and /clone has setBlockState flags 18 and onAdded/onRemoved suppressed",
 		categories = RuleCategory.CREATIVE,
 		options = {"off", "wool", "all"})
-	public static String dispenserNoItemCost = "off";
+	public static boolean fillUpdates = true;
+
+	@Rule(desc = "Controls the circumstances in which hoppers don't consume items when transferring out",
+		categories = RuleCategory.CREATIVE,
+		options = {"off", "wool", "all"})
+	public static String hopperNoItemCost = "off";
+
+	@Rule(desc = "Emerald ore receiving power throws an exception on update",
+		categories = RuleCategory.CREATIVE)
+	public static boolean oreUpdateSuppressor = false;
 
 	/*
 		 _____                         _
@@ -254,6 +266,12 @@ public class CarpetSettings {
 	 */
 	// TWEAK - This section contains fixes to unintuitive/inconvenient vanilla features
 	//         that may be somewhat survival-oriented
+	@Rule(desc = "Flexible/accurate block placement places blocks in a precise direction", categories = RuleCategory.FEATURE)
+	public static boolean accurateBlockPlacement = false;
+
+	@Rule(desc = "Clicking on a cake always eats a slice",
+		categories = RuleCategory.TWEAK)
+	public static boolean cakeAlwaysEat = false;
 
 	@Rule(desc = "Whether observers pulse once when placed by a player",
 		categories = {RuleCategory.SURVIVAL, RuleCategory.TWEAK})
@@ -278,6 +296,21 @@ public class CarpetSettings {
 
 	@Rule(desc = "Rule controlling quasi-connectivity", categories = RuleCategory.YEET)
 	public static boolean quasiConnectivity = true;
+
+	@Rule(desc = "Prevents all onAdded() calls", categories = RuleCategory.YEET)
+	public static boolean yeetInitialUpdates = false;
+
+	@Rule(desc = "Prevents all comparator updates", categories = RuleCategory.YEET)
+	public static boolean yeetComparatorUpdates = false;
+
+	@Rule(desc = "Prevents all neighbor updates", categories = RuleCategory.YEET)
+	public static boolean yeetNeighborUpdates = false;
+
+	@Rule(desc = "Prevents all observer updates", categories = RuleCategory.YEET)
+	public static boolean yeetObserverUpdates = false;
+
+	@Rule(desc = "Prevents all onRemoved() calls", categories = RuleCategory.YEET)
+	public static boolean yeetRemovalUpdates = false;
 
 	/*
 		 _____               _

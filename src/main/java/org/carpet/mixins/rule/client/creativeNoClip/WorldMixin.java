@@ -1,4 +1,4 @@
-package org.carpet.mixins.rule.creativeNoClip;
+package org.carpet.mixins.rule.client.creativeNoClip;
 
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
