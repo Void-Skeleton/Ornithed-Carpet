@@ -160,14 +160,14 @@ public final class Validators {
 	}
 
 	public static abstract class SideEffectValidator<T> extends Validator<T> {
-		public abstract T defaultValue();
+		public abstract T parseValue(T newValue);
 
 		public abstract void performEffect(T newValue);
 
 		@Override
 		public T validate(CommandSource source, CarpetRule<T> changingRule, T newValue, String userInput) {
 			performEffect(newValue);
-			return defaultValue();
+			return parseValue(newValue);
 		}
 	}
 }

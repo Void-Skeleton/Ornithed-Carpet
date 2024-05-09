@@ -4,10 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.carpet.settings.rule.Rule;
 import org.carpet.settings.rule.RuleCategory;
-import org.carpet.settings.validation.IFModifier;
-import org.carpet.settings.validation.ITTModifier;
-import org.carpet.settings.validation.RPModifier;
-import org.carpet.settings.validation.Validators;
+import org.carpet.settings.validation.*;
 
 public class CarpetSettings {
 	public static final String carpetVersion = "0.1.0";
@@ -194,6 +191,19 @@ public class CarpetSettings {
 	 */
 	// POPULATION - This section contains population/population suppression/async exploit
 	//              related rules
+	@Rule(desc = "Updating a beacon with redstone power sends an async NC and PP update each",
+		categories = {RuleCategory.CREATIVE, RuleCategory.POPULATION})
+	public static boolean asyncBeaconUpdate = false;
+
+	@Rule(desc = "Async world modification no longer mess up internal states of player chunk map",
+		categories = {RuleCategory.CREATIVE, RuleCategory.POPULATION})
+	public static boolean asyncPacketSyncing = false;
+
+	@Rule(desc = "Chunk map no longer throws a possible CME with an async line running - infamous 8001gt crash",
+		categories = {RuleCategory.CREATIVE, RuleCategory.POPULATION, RuleCategory.TWEAK},
+		validators = ChunkMapCrashFixModifier.class)
+	public static boolean fixAsyncChunkMapCrash = false;
+
 	@Rule(desc = "Instant fall, the global flag turned on by suppression any part of a population",
 		categories = {RuleCategory.CREATIVE, RuleCategory.POPULATION},
 		validators = IFModifier.class)

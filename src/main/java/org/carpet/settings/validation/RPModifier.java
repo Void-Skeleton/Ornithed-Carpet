@@ -4,7 +4,7 @@ import org.carpet.mixins.accessor.RedstoneWireBlock_accessor;
 
 public class RPModifier extends Validators.SideEffectValidator<Boolean> {
 	@Override
-	public Boolean defaultValue() {
+	public Boolean parseValue(Boolean newValue) {
 		return true;
 	}
 

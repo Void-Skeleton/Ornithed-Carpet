@@ -5,7 +5,7 @@ import org.carpet.server.CarpetServer;
 
 public class ITTModifier extends Validators.SideEffectValidator<String> {
 	@Override
-	public String defaultValue() {
+	public String parseValue(String newValue) {
 		return "none";
 	}
 

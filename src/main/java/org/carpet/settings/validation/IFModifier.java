@@ -4,7 +4,7 @@ import net.minecraft.block.FallingBlock;
 
 public class IFModifier extends Validators.SideEffectValidator<Boolean> {
 	@Override
-	public Boolean defaultValue() {
+	public Boolean parseValue(Boolean newValue) {
 		return false;
 	}
 
