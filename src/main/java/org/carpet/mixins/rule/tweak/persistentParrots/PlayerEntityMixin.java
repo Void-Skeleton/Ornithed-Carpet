@@ -1,4 +1,4 @@
-package org.carpet.mixins.rule.persistentParrots;
+package org.carpet.mixins.rule.tweak.persistentParrots;
 
 import net.minecraft.entity.living.player.PlayerEntity;
 import org.carpet.settings.CarpetSettings;

@@ -1,4 +1,4 @@
-package org.carpet.mixins.rule.xpNoCooldown;
+package org.carpet.mixins.rule.feature.xpNoCooldown;
 
 import org.carpet.settings.CarpetSettings;
 import net.minecraft.entity.XpOrbEntity;

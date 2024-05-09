@@ -4,12 +4,23 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.carpet.settings.rule.Rule;
 import org.carpet.settings.rule.RuleCategory;
+import org.carpet.settings.validation.IFModifier;
+import org.carpet.settings.validation.ITTModifier;
+import org.carpet.settings.validation.RPModifier;
 import org.carpet.settings.validation.Validators;
 
 public class CarpetSettings {
 	public static final String carpetVersion = "0.1.0";
 	public static final Logger LOG = LogManager.getLogger("carpet");
 
+	/*
+		  ____
+		 / ___|  ___   _ __   ___
+		| |     / _ \ | '__| / _ \
+		| |___ | (_) || |   |  __/
+		 \____| \___/ |_|    \___|
+	 */
+	// CORE - Central settings important for the carpet mod framework
 	@Rule(
 			desc = "Sets the language for Carpet",
 			categories = RuleCategory.FEATURE,
@@ -25,33 +36,6 @@ public class CarpetSettings {
 			options = {"ops", "2", "4"}
 	)
 	public static String carpetCommandPermissionLevel = "ops";
-
-	// -----------------------------------------
-	//                 Features
-	// -----------------------------------------
-
-	//#if MC>=11200
-	@Rule(desc = "Parrots don't get of your shoulders until you receive proper damage", categories = {RuleCategory.SURVIVAL, RuleCategory.FEATURE})
-	public static boolean persistentParrots = false;
-	//#endif
-
-	@Rule(desc = "Players absorb XP instantly, without delay", categories = RuleCategory.CREATIVE)
-	public static boolean xpNoCooldown = false;
-
-	@Rule(
-		desc = "Creative No Clip",
-		extra = {
-			"On servers it needs to be set on both ",
-			"client and server to function properly.",
-			"Has no effect when set on the server only",
-			"Can allow to phase through walls",
-			"if only set on the carpet client side",
-			"but requires some trapdoor magic to",
-			"allow the player to enter blocks"
-		},
-		categories = {RuleCategory.CREATIVE, RuleCategory.CLIENT}
-	)
-	public static boolean creativeNoClip = false;
 
 	/*
           _____         _
@@ -79,6 +63,22 @@ public class CarpetSettings {
 		validators = Validators.NonNegativeNumber.class
 	)
 	public static int fillLimit = 32768;
+
+	@Rule(
+		desc = "Limit for entity collisions per entity per tick, 0 = no limit",
+		options = {"0", "20", "100"}, categories = RuleCategory.OPTIMIZATION,
+		strict = false, validators = Validators.NonNegativeNumber.class
+	)
+	public static int maxEntityCollisions = 0;
+
+	@Rule(
+		desc = "Percentage of online players required to be sleeping to skip night",
+		options = {"100", "0", "20"},
+		categories = RuleCategory.FEATURE,
+		strict = false,
+		validators = Validators.Percentage.class
+	)
+	public static int playersSleepingPercentage = 100;
 
 	@Rule(
 		desc = "Amount of delay ticks to use a nether portal in creative",
@@ -126,6 +126,30 @@ public class CarpetSettings {
 	public static int tileTickLimit = 65536;
 
 	/*
+		  ____  _  _               _
+		 / ___|| |(_)  ___  _ __  | |_
+		| |    | || | / _ \| '_ \ | __|
+		| |___ | || ||  __/| | | || |_
+		 \____||_||_| \___||_| |_| \__|
+	 */
+	// CLIENT - This section contains all the client-related settings
+
+	@Rule(
+		desc = "Creative No Clip",
+		extra = {
+			"On servers it needs to be set on both ",
+			"client and server to function properly.",
+			"Has no effect when set on the server only",
+			"Can allow to phase through walls",
+			"if only set on the carpet client side",
+			"but requires some trapdoor magic to",
+			"allow the player to enter blocks"
+		},
+		categories = {RuleCategory.CREATIVE, RuleCategory.CLIENT}
+	)
+	public static boolean creativeNoClip = false;
+
+	/*
 		 _____  _   _  _____
 		|_   _|| \ | ||_   _|
 		  | |  |  \| |  | |
@@ -159,4 +183,76 @@ public class CarpetSettings {
 		options = {"70", "80", "100"},
 		strict = false)
 	public static int tntFuseLength = 80;
+
+	/*
+		 ____                        _         _    _
+		|  _ \   ___   _ __   _   _ | |  __ _ | |_ (_)  ___   _ __
+		| |_) | / _ \ | '_ \ | | | || | / _` || __|| | / _ \ | '_ \
+		|  __/ | (_) || |_) || |_| || || (_| || |_ | || (_) || | | |
+		|_|     \___/ | .__/  \__,_||_| \__,_| \__||_| \___/ |_| |_|
+					  |_|
+	 */
+	// POPULATION - This section contains population/population suppression/async exploit
+	//              related rules
+	@Rule(desc = "Instant fall, the global flag turned on by suppression any part of a population",
+		categories = {RuleCategory.CREATIVE, RuleCategory.POPULATION},
+		validators = IFModifier.class)
+	public static boolean instantFall = false;
+
+	@Rule(desc = "Instant tile ticks, the dimensional flag turned on by suppressing a populating liquid pocket",
+		categories = {RuleCategory.CREATIVE, RuleCategory.POPULATION},
+		validators = ITTModifier.class,
+		options = {"none", "overworld_false", "overworld_true", "nether_false", "nether_true",
+			"end_false", "end_true"})
+	public static String instantTileTicks = "none";
+
+	@Rule(desc = "Redstone power, the global flag turned off by suppressing a population caused by an RS dust power check",
+		categories = {RuleCategory.CREATIVE, RuleCategory.POPULATION},
+		validators = RPModifier.class)
+	public static boolean redstonePower = true;
+
+	/*
+		 _____                         _
+		|_   _|__      __  ___   __ _ | | __
+		  | |  \ \ /\ / / / _ \ / _` || |/ /
+		  | |   \ V  V / |  __/| (_| ||   <
+		  |_|    \_/\_/   \___| \__,_||_|\_\
+	 */
+	// TWEAK - This section contains fixes to unintuitive/inconvenient vanilla features
+	//         that may be somewhat survival-oriented
+
+	@Rule(desc = "Whether observers pulse once when placed by a player",
+		categories = {RuleCategory.SURVIVAL, RuleCategory.TWEAK})
+	public static boolean observerInitialPulse = true;
+
+	//#if MC>=11200
+	@Rule(desc = "Parrots don't get of your shoulders until you receive proper damage",
+		categories = {RuleCategory.SURVIVAL, RuleCategory.TWEAK})
+	public static boolean persistentParrots = false;
+	//#endif
+
+	/*
+		__   __             _
+		\ \ / /  ___   ___ | |_
+		 \ V /  / _ \ / _ \| __|
+		  | |  |  __/|  __/| |_
+		  |_|   \___| \___| \__|
+	 */
+	// YEET - Radical changes often totally disabling certain important features from the game,
+	//        oriented for debugging purposes that should only be set to a non-default value
+	//        for short intervals
+
+	@Rule(desc = "Rule controlling quasi-connectivity", categories = RuleCategory.YEET)
+	public static boolean quasiConnectivity = true;
+
+	/*
+		 _____               _
+		|  ___|  ___   __ _ | |_  _   _  _ __   ___
+		| |_    / _ \ / _` || __|| | | || '__| / _ \
+		|  _|  |  __/| (_| || |_ | |_| || |   |  __/
+		|_|     \___| \__,_| \__| \__,_||_|    \___|
+	 */
+	// FEATURE - This section contains all features that does not belong to a preceding category
+	@Rule(desc = "Players absorb XP instantly, without delay", categories = RuleCategory.CREATIVE)
+	public static boolean xpNoCooldown = false;
 }

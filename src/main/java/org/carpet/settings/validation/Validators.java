@@ -88,6 +88,17 @@ public final class Validators {
 		}
 	}
 
+	public static class Percentage extends Validator<Integer> {
+		@Override
+		public Integer validate(CommandSource source, CarpetRule<Integer> changingRule, Integer newValue, String userInput) {
+			return (newValue >= 0 && newValue <= 100) ? newValue : null;
+		}
+
+		public String description() {
+			return "You must choose a value from 0 to 100";
+		}
+	}
+
 	public static class PositiveIn10Bits extends Validator<Integer> {
 		@Override
 		//#if MC>=11300
@@ -145,6 +156,18 @@ public final class Validators {
 		@Override
 		public String description() {
 			return "Must be between 0 and 1";
+		}
+	}
+
+	public static abstract class SideEffectValidator<T> extends Validator<T> {
+		public abstract T defaultValue();
+
+		public abstract void performEffect(T newValue);
+
+		@Override
+		public T validate(CommandSource source, CarpetRule<T> changingRule, T newValue, String userInput) {
+			performEffect(newValue);
+			return defaultValue();
 		}
 	}
 }
