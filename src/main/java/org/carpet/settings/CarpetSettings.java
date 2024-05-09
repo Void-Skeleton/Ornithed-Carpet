@@ -222,6 +222,30 @@ public class CarpetSettings {
 	public static boolean redstonePower = true;
 
 	/*
+		  ____                     _    _
+		 / ___| _ __   ___   __ _ | |_ (_)__   __  ___
+		| |    | '__| / _ \ / _` || __|| |\ \ / / / _ \
+		| |___ | |   |  __/| (_| || |_ | | \ V / |  __/
+		 \____||_|    \___| \__,_| \__||_|  \_/   \___|
+	 */
+	// CREATIVE - This sections contains rule solely for the purpose of creative mode testing and should never be on
+	//            for survival servers
+	@Rule(desc = "Controls the circumstances in which hoppers don't consume items when transferring out",
+		categories = RuleCategory.CREATIVE,
+		options = {"off", "wool", "all"})
+	public static String hopperNoItemCost = "off";
+
+	@Rule(desc = "Controls the circumstances in which droppers don't consume items when firing",
+		categories = RuleCategory.CREATIVE,
+		options = {"off", "wool", "all"})
+	public static String dropperNoItemCost = "off";
+
+	@Rule(desc = "Controls the circumstances in which dispensers don't consume items when firing",
+		categories = RuleCategory.CREATIVE,
+		options = {"off", "wool", "all"})
+	public static String dispenserNoItemCost = "off";
+
+	/*
 		 _____                         _
 		|_   _|__      __  ___   __ _ | | __
 		  | |  \ \ /\ / / / _ \ / _` || |/ /
@@ -262,7 +286,14 @@ public class CarpetSettings {
 		|  _|  |  __/| (_| || |_ | |_| || |   |  __/
 		|_|     \___| \__,_| \__| \__,_||_|    \___|
 	 */
-	// FEATURE - This section contains all features that does not belong to a preceding category
-	@Rule(desc = "Players absorb XP instantly, without delay", categories = RuleCategory.CREATIVE)
+	// FEATURE - This section contains added non-vanilla features that does not belong to a preceding category
+
+	@Rule(desc = "Note blocks have exact 1.13 behavior", categories = RuleCategory.FEATURE)
+	public static boolean flattenedNoteBlocks = false;
+
+	@Rule(desc = "Block entities can be pushed or pulled by pistons", categories = RuleCategory.FEATURE)
+	public static boolean movableBlockEntities = false;
+
+	@Rule(desc = "Players absorb XP instantly, without delay", categories = RuleCategory.FEATURE)
 	public static boolean xpNoCooldown = false;
 }
