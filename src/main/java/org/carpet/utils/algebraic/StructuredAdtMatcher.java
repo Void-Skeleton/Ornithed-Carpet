@@ -203,6 +203,8 @@ public class StructuredAdtMatcher<T> extends AbstractAdtMatcher<T> {
 			}
 			componentFields[i] = currentComponents.toArray(new Field[0]);
 			fieldPrefixes[i] = currentPrefixes.toArray(new String[0]);
+			currentComponents.clear();
+			currentPrefixes.clear();
 		}
 	}
 }
