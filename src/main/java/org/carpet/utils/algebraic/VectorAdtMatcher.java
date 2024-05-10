@@ -46,6 +46,7 @@ public class VectorAdtMatcher<T> extends AbstractAdtMatcher<T> {
 		} catch (NoSuchMethodException e) {
 			throw new IllegalArgumentException("Specified vector type does not have a constructor with specified number of params");
 		}
+		this.values = new Object[size];
 	}
 
 	@Override
