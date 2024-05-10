@@ -1,4 +1,4 @@
-package org.carpet.mixins.server;
+package org.carpet.mixins.command;
 
 import org.carpet.server.CarpetServer;
 //#if MC>=11300
@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 //$$ 	@Final
 //$$ 	private CommandDispatcher<CommandSourceStack> dispatcher;
 //#else
-public abstract class CommandManagerMixin extends CommandRegistry {
+public abstract class CommandManager_registerCarpetCommands extends CommandRegistry {
 //#endif
 
 	@Inject(method = "<init>", at = @At("RETURN"))

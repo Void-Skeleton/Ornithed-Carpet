@@ -1,5 +1,6 @@
 package org.carpet.server;
 
+import org.carpet.command.CarpetCommand;
 import org.carpet.settings.CarpetSettings;
 import org.carpet.settings.SettingsManager;
 import org.carpet.network.ServerNetworkHandler;
@@ -48,7 +49,7 @@ public class CarpetServer {
 		//#if MC>=11300
 //$$ 		settingsManager.registerCommand(dispatcher);
 		//#else
-		registry.register(new SettingsManager.CarpetCommand(settingsManager));
+		registry.register(new CarpetCommand(settingsManager));
 		//#endif
 	}
 

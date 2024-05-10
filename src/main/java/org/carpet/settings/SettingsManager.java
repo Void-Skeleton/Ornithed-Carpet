@@ -56,7 +56,7 @@ public class SettingsManager {
 	private final Map<String, CarpetRule<?>> rules = new HashMap<>();
 	private final String version;
 	private final String identifier;
-	private final String fancyName;
+	public final String fancyName;
 	private boolean locked;
 	private MinecraftServer server;
 	private final List<RuleObserver> observers = new ArrayList<>();
@@ -158,7 +158,7 @@ public class SettingsManager {
 	//#if MC>=11300
 //$$ 	private int setDefault(CommandSourceStack source, CarpetRule<?> rule, String stringValue) {
 	//#else
-	private int setDefault(CommandSource source, CarpetRule<?> rule, String stringValue) {
+	public int setDefault(CommandSource source, CarpetRule<?> rule, String stringValue) {
 	//#endif
 		if (locked()) {
 			return 0;
@@ -182,7 +182,7 @@ public class SettingsManager {
 	//#if MC>=11300
 //$$ 	private int removeDefault(CommandSourceStack source, CarpetRule<?> rule) {
 	//#else
-	private int removeDefault(CommandSource source, CarpetRule<?> rule) {
+	public int removeDefault(CommandSource source, CarpetRule<?> rule) {
 	//#endif
 		if (locked) {
 			return 0;
@@ -357,7 +357,7 @@ public class SettingsManager {
 		}
 	}
 
-	private boolean matchesSubStr(String string, String string2) {
+	public boolean matchesSubStr(String string, String string2) {
 		for(int i = 0; !string2.startsWith(string, i); ++i) {
 			i = string2.indexOf(95, i);
 			if (i < 0) {
@@ -370,7 +370,7 @@ public class SettingsManager {
 	//#if MC>=11300
 //$$ 	private int setRule(CommandSourceStack source, CarpetRule<?> rule, String newValue) {
 	//#else
-	private int setRule(CommandSource source, CarpetRule<?> rule, String newValue) {
+	public int setRule(CommandSource source, CarpetRule<?> rule, String newValue) {
 	//#endif
 		try {
 			rule.set(source, newValue);
@@ -386,7 +386,7 @@ public class SettingsManager {
 	//#if MC>=11300
 //$$ 	private CarpetRule<?> contextRule(String ruleName) throws CommandSyntaxException {
 	//#else
-	private CarpetRule<?> contextRule(String ruleName) {
+	public CarpetRule<?> contextRule(String ruleName) {
 	//#endif
 		//#if MC>=11300
 //$$ 		CarpetRule<?> rule = getCarpetRule(ruleName);
@@ -406,7 +406,7 @@ public class SettingsManager {
 	//#if MC>=11300
 //$$ 	private int displayRuleMenu(CommandSourceStack source, CarpetRule<?> rule) {  // TODO check if there's dupe code around options buttons
 	//#else
-	private int displayRuleMenu(CommandSource source, CarpetRule<?> rule) {  // TODO check if there's dupe code around options buttons
+	public int displayRuleMenu(CommandSource source, CarpetRule<?> rule) {  // TODO check if there's dupe code around options buttons
 	//#endif
 		String displayName = RuleHelper.translatedName(rule);
 
@@ -440,7 +440,7 @@ public class SettingsManager {
 		return 1;
 	}
 
-	private Collection<CarpetRule<?>> getRulesMatching(String search) {
+	public Collection<CarpetRule<?>> getRulesMatching(String search) {
 		String lcSearch = search.toLowerCase(Locale.ROOT);
 		return rules.values().stream().filter(rule -> {
 			if (rule.name().toLowerCase(Locale.ROOT).contains(lcSearch)) {
@@ -520,7 +520,7 @@ public class SettingsManager {
 		return Collections.unmodifiableCollection(rules.values());
 	}
 
-	private Collection<CarpetRule<?>> getRulesSorted() {
+	public Collection<CarpetRule<?>> getRulesSorted() {
 		return rules.values().stream().sorted(comparing(CarpetRule::name)).collect(Collectors.toList());
 	}
 
@@ -531,7 +531,7 @@ public class SettingsManager {
 	//#if MC>=11300
 //$$ 	private int listSettings(CommandSourceStack source, String title, Collection<CarpetRule<?>> settings_list) {
 	//#else
-	private int listSettings(CommandSource source, String title, Collection<CarpetRule<?>> settings_list) {
+	public int listSettings(CommandSource source, String title, Collection<CarpetRule<?>> settings_list) {
 	//#endif
 		Messenger.m(source,String.format("wb %s:",title));
 		settings_list.forEach(e -> Messenger.m(source, displayInteractiveSetting(e)));
@@ -598,154 +598,5 @@ public class SettingsManager {
 		}
 	}
 
-	//#if MC<=11202
-	public static class CarpetCommand extends AbstractCommand {
-		private final SettingsManager sm;
-		public CarpetCommand(SettingsManager sm) {
-			this.sm = sm;
-		}
-
-		@Override
-		public String getName() {
-			return this.sm.identifier();
-		}
-
-		@Override
-		public String getUsage(CommandSource commandSource) {
-			return this.sm.identifier() + " <rule> <value>";
-		}
-
-		@Override
-		//#if MC>10809
-		public void run(MinecraftServer minecraftServer, CommandSource commandSource, String[] strings) throws CommandException {
-		//#else
-		//$$ public void run(CommandSource commandSource, String[] strings) throws CommandException {
-		//#endif
-			if (strings.length == 0) {
-				this.sm.listAllSettings(commandSource);
-			}
-			if (strings.length == 1) {
-				if ("list".equalsIgnoreCase(strings[0])) {
-					this.sm.listSettings(commandSource, String.format(tr(TranslationKeys.ALL_MOD_SETTINGS), this.sm.fancyName), this.sm.getRulesSorted());
-				} else if (strings[0].equalsIgnoreCase("setDefault") || strings[0].equalsIgnoreCase("removeDefault")) {
-					return;
-				} else {
-					CarpetRule<?> rule = this.sm.contextRule(strings[0]);
-					if (rule != null) {
-						this.sm.displayRuleMenu(commandSource, rule);
-					} else {
-						Messenger.c("rb " + tr(TranslationKeys.UNKNOWN_RULE) + ": " + strings[0]);
-					}
-				}
-			}
-			if (strings.length == 2) {
-				if ("list".equalsIgnoreCase(strings[0]) && Iterables.contains(this.sm.getCategories(), strings[1])) {
-					this.sm.listSettings(commandSource, String.format(tr(TranslationKeys.MOD_SETTINGS_MATCHING), this.sm.fancyName, RuleHelper.translatedCategory(this.sm.identifier(), strings[1])), this.sm.getRulesMatching(strings[1]));
-				} else if (strings[0].equalsIgnoreCase("setDefault")) {
-					return;
-				} else if (strings[0].equalsIgnoreCase("removeDefault")) {
-					CarpetRule<?> rule = this.sm.contextRule(strings[1]);
-					if (rule != null) {
-						this.sm.removeDefault(commandSource, rule);
-					} else {
-						Messenger.c("rb " + tr(TranslationKeys.UNKNOWN_RULE) + ": " + strings[1]);
-					}
-				} else {
-					CarpetRule<?> rule = this.sm.contextRule(strings[0]);
-					if (rule != null) {
-						this.sm.setRule(commandSource, rule, strings[1]);
-					} else {
-						Messenger.c("rb " + tr(TranslationKeys.UNKNOWN_RULE) + ": " + strings[0]);
-					}
-				}
-			}
-			if (strings.length == 3) {
-				if (strings[0].equalsIgnoreCase("setDefault")) {
-					CarpetRule<?> rule = this.sm.contextRule(strings[1]);
-					if (rule != null) {
-						this.sm.setDefault(commandSource, rule, strings[2]);
-					} else {
-						Messenger.c("rb " + tr(TranslationKeys.UNKNOWN_RULE) + ": " + strings[1]);
-					}
-				}
-			}
-		}
-
-		@Override
-		//#if MC>10809
-		public boolean canUse(MinecraftServer minecraftServer, CommandSource commandSource) {
-		//#else
-		//$$ public boolean canUse(CommandSource commandSource) {
-		//#endif
-			return CommandHelper.canUseCommand(commandSource, CarpetSettings.carpetCommandPermissionLevel) && !this.sm.locked();
-		}
-
-	private List<String> smartSuggestion(List<String> stream, String key) {
-		List<String> regularSuggestionList = new ArrayList<>();
-		List<String> smartSuggestionList = new ArrayList<>();
-		stream.forEach((listItem) -> {
-			List<String> words = Arrays.stream(listItem.split("(?<!^)(?=[A-Z])")).map(s -> s.toLowerCase(Locale.ROOT)).collect(Collectors.toList());
-			List<String> prefixes = new ArrayList<>(words.size());
-			for (int i = 0; i < words.size(); i++)
-				prefixes.add(String.join("", words.subList(i, words.size())));
-			if (prefixes.stream().anyMatch(s -> s.startsWith(key))) {
-				smartSuggestionList.add(listItem);
-			}
-			if (this.sm.matchesSubStr(key, listItem.toLowerCase(Locale.ROOT))) {
-				regularSuggestionList.add(listItem);
-			}
-		});
-		return regularSuggestionList.isEmpty() ? smartSuggestionList : regularSuggestionList;
-	}
-
-		@Override
-		//#if MC>10809
-		public List<String> getSuggestions(MinecraftServer minecraftServer, CommandSource commandSource, String[] strings, @Nullable BlockPos blockPos) {
-		//#elseif MC>10710
-		//$$ public List<String> getSuggestions(CommandSource commandSource, String[] strings, @Nullable BlockPos blockPos) {
-		//#else
-		//$$ public List<String> getSuggestions(CommandSource commandSource, String[] strings) {
-		//#endif
-			if (this.sm.locked()) {
-				return Collections.emptyList();
-			}
-			if (strings.length == 1) {
-				List<String> stream = this.sm.getRulesSorted().stream().map(CarpetRule::name).collect(Collectors.toList());
-				stream.add("list");
-				stream.add("removeDefault");
-				stream.add("setDefault");
-				return this.smartSuggestion(stream, strings[0]);
-			}
-			if (strings.length == 2) {
-				if (strings[0].equalsIgnoreCase("list")) {
-					List<String> categories = new ArrayList<>();
-					this.sm.getCategories().forEach(categories::add);
-					return this.smartSuggestion(categories, strings[1]);
-				} else if (strings[0].equalsIgnoreCase("setDefault") || strings[0].equalsIgnoreCase("removeDefault")) {
-					return this.smartSuggestion(this.sm.getRulesSorted().stream().map(CarpetRule::name).collect(Collectors.toList()), strings[1]);
-				} else {
-					CarpetRule<?> rule = this.sm.contextRule(strings[0]);
-					if (rule != null) {
-						return this.smartSuggestion(new ArrayList<>(rule.suggestions()), strings[1]);
-					}
-				}
-			}
-			if (strings.length == 3) {
-				if (strings[0].equalsIgnoreCase("setDefault")) {
-					CarpetRule<?> rule = this.sm.contextRule(strings[1]);
-					if (rule != null) {
-						return this.smartSuggestion(new ArrayList<>(rule.suggestions()), strings[2]);
-					}
-				}
-			}
-			return Collections.emptyList();
-		}
-		//#if MC<=10710
-		//$$ @Override
-		//$$ public int compareTo(@NotNull Object o) {
-		//$$ 	return this.compareTo((Command) o);
-		//$$ }
-		//#endif
-	}
 	//#endif
 }
