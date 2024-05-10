@@ -15,7 +15,7 @@ public interface AdtMatcher<T> {
 
 	T matchedValue();
 
-	static <T> AdtMatcher<T> createAdtMatcher(Class<T> type) {
+	static <T> AdtMatcher<T> create(Class<T> type) {
 		// Match raw strings
 		if (type == String.class) return (AdtMatcher<T>) new StringAdtMatcher();
 		// Match enum types

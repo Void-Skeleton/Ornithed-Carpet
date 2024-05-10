@@ -56,7 +56,7 @@ public class SettingsManager {
 	private final Map<String, CarpetRule<?>> rules = new HashMap<>();
 	private final String version;
 	private final String identifier;
-	public final String fancyName;
+	private final String fancyName;
 	private boolean locked;
 	private MinecraftServer server;
 	private final List<RuleObserver> observers = new ArrayList<>();
@@ -597,6 +597,10 @@ public class SettingsManager {
 			return locked;
 		}
 	}
-
 	//#endif
+
+
+	public String getFancyName() {
+		return fancyName;
+	}
 }

@@ -111,7 +111,7 @@ public class StructuredAdtMatcher<T> extends AbstractAdtMatcher<T> {
 			}
 			// Parse another field
 			Field field = components[fieldProgress];
-			AdtMatcher<?> fieldMatcher = componentMatchers.computeIfAbsent(field.getType(), AdtMatcher::createAdtMatcher);
+			AdtMatcher<?> fieldMatcher = componentMatchers.computeIfAbsent(field.getType(), AdtMatcher::create);
 			int maxMatchCount = fieldMatcher.maxMatchCount();
 			int upperBound = maxMatchCount >= 0 ? Math.min(stringProgress + maxMatchCount, data.size()) : data.size();
 			// Prepare sublist data based on the maximal possible matched items
