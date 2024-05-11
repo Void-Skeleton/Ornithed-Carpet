@@ -283,6 +283,10 @@ public class CarpetSettings {
 	public static boolean persistentParrots = false;
 	//#endif
 
+	@Rule(desc = "Allow placing of pumpkins and fence gates mid-air",
+		categories = {RuleCategory.SURVIVAL, RuleCategory.TWEAK})
+	public static boolean relaxedBlockPlacement = false;
+
 	/*
 		__   __             _
 		\ \ / /  ___   ___ | |_
