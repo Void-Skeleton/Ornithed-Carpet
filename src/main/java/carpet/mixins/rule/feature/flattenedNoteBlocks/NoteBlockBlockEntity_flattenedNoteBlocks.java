@@ -3,7 +3,7 @@ package carpet.mixins.rule.feature.flattenedNoteBlocks;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.NoteBlockBlockEntity;
-import carpet.utils.duck.NoteBlockBlockEntity_duck;
+import carpet.duck.NoteBlockBlockEntity_duck;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 

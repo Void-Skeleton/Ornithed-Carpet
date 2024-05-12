@@ -1,6 +1,5 @@
 package carpet.mixins.protocol;
 
-import carpet.fakes.CustomPayloadC2SPacketAccess;
 import carpet.network.CarpetClient;
 import carpet.network.ServerNetworkHandler;
 import net.minecraft.nbt.NbtCompound;
@@ -32,7 +31,7 @@ public class ServerPlayNetworkHandlerMixin {
 		//#if MC>11202
 //$$ 		if (CarpetClient.CARPET_CHANNEL.equals(((CustomPayloadC2SPacketAccess) customPayloadC2SPacket).getChannel())) {
 		//#else
-		if (CarpetClient.CARPET_CHANNEL.toString().equals(((CustomPayloadC2SPacketAccess) customPayloadC2SPacket).getChannel())) {
+		if (CarpetClient.CARPET_CHANNEL.toString().equals(((CustomPayloadC2SPacket_accessor) customPayloadC2SPacket).getChannel())) {
 		//#endif
 			//#if MC<=10710
 			//$$
@@ -40,7 +39,7 @@ public class ServerPlayNetworkHandlerMixin {
 			//$$ try {
 			//#endif
 				//#if MC>10710
-				NbtCompound nbt = ((CustomPayloadC2SPacketAccess) customPayloadC2SPacket).getData().readNbtCompound();
+				NbtCompound nbt = ((CustomPayloadC2SPacket_accessor) customPayloadC2SPacket).getData().readNbtCompound();
 				//#else
 				//$$ NbtCompound nbt = new PacketByteBuf(Unpooled.wrappedBuffer(((CustomPayloadC2SPacketAccess) customPayloadC2SPacket).getData())).readNbtCompound();
 				//#endif

@@ -10,7 +10,7 @@ import net.minecraft.block.entity.NoteBlockBlockEntity;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Tickable;
-import carpet.utils.duck.MovingBlockEntity_duck;
+import carpet.duck.MovingBlockEntity_duck;
 import carpet.settings.CarpetSettings;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

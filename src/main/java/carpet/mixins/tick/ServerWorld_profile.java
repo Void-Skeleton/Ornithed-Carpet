@@ -3,7 +3,7 @@ package carpet.mixins.tick;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.world.ServerWorld;
-import carpet.utils.duck.ServerWorld_duck;
+import carpet.duck.ServerWorld_duck;
 import carpet.tick.TickContext;
 import carpet.tick.TickPhase;
 import carpet.tick.TickPhaseProfiler;

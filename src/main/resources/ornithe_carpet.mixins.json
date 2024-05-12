@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "org.carpet.mixins",
+  "package": "carpet.mixins",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "accessor.ChunkHolder_accessor",
@@ -11,7 +11,7 @@
     "accessor.ServerWorld_accessor",
     "accessor.World_accessor",
     "command.CommandManager_registerCarpetCommands",
-    "protocol.CustomPayloadC2SPacketMixin",
+    "protocol.CustomPayloadC2SPacket_accessor",
     "protocol.ServerPlayNetworkHandlerMixin",
     "rule.client.creativeNoClip.Entity_creativeNoClip",
     "rule.client.creativeNoClip.PlayerEntity_creativeNoClip",

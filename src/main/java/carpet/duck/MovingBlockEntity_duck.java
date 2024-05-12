@@ -1,4 +1,4 @@
-package carpet.utils.duck;
+package carpet.duck;
 
 import net.minecraft.block.entity.BlockEntity;
 

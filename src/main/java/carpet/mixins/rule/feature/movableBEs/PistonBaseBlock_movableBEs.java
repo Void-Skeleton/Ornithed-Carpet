@@ -10,7 +10,7 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-import carpet.utils.duck.MovingBlockEntity_duck;
+import carpet.duck.MovingBlockEntity_duck;
 import carpet.settings.CarpetSettings;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
