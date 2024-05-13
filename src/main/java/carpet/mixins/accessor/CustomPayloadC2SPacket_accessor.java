@@ -1,4 +1,4 @@
-package carpet.mixins.protocol;
+package carpet.mixins.accessor;
 
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;

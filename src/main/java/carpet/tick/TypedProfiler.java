@@ -23,6 +23,12 @@ public class TypedProfiler<T> {
 		this.profilingPhase = phase;
 	}
 
+	public void clear() {
+		phaseTimes.clear();
+		phaseSwaps.clear();
+		profilingPhase = null;
+	}
+
 	protected Map<T, AtomicLong> createPhaseMap() {
 		return new HashMap<>();
 	}

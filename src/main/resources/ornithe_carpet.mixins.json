@@ -6,13 +6,13 @@
   "mixins": [
     "accessor.ChunkHolder_accessor",
     "accessor.ChunkMap_accessor",
+    "accessor.CustomPayloadC2SPacket_accessor",
     "accessor.PlayerManager_accessor",
     "accessor.RedstoneWireBlock_accessor",
     "accessor.ServerWorld_accessor",
     "accessor.World_accessor",
     "command.CommandManager_registerCarpetCommands",
-    "protocol.CustomPayloadC2SPacket_accessor",
-    "protocol.ServerPlayNetworkHandlerMixin",
+    "protocol.ServerPlayNetworkHandler_carpetPayload",
     "rule.client.creativeNoClip.Entity_creativeNoClip",
     "rule.client.creativeNoClip.PlayerEntity_creativeNoClip",
     "rule.client.creativeNoClip.World_creativeNoClip",
@@ -65,13 +65,16 @@
     "server.MinecraftServer_initialize",
     "server.PlayerManager_syncToCarpet",
     "server.ServerPlayNetworkHandler_syncToCarpet",
-    "tick.ServerWorld_profile",
-    "tick.World_profile"
+    "tick.phase.MinecraftServer_swapPhase",
+    "tick.phase.ServerWorld_swapPhase",
+    "tick.phase.World_swapPhase",
+    "tick.profile.ServerWorld_profile",
+    "tick.profile.World_profile"
   ],
   "client": [
-    "protocol.ClientPlayNetworkHandlerMixin",
-    "protocol.LocalClientPlayerEntityMixin",
-    "protocol.MinecraftMixin",
+    "protocol.client.ClientPlayNetworkHandler_syncLoggingAndPayload",
+    "protocol.client.LocalClientPlayerEntity_clientCommand",
+    "protocol.client.Minecraft_disconnectClient",
     "rule.client.creativeNoClip.LocalClientPlayerEntity_creativeNoClip",
     "rule.client.creativeNoClip.WorldRenderer_creativeNoClip",
     "rule.client.smoothClientAnimations.Minecraft_smoothClientAnimations"

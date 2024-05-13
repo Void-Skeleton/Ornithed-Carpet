@@ -6,15 +6,16 @@ import carpet.settings.CarpetSettings;
 import carpet.settings.rule.CarpetRule;
 import carpet.settings.rule.InvalidRuleValueException;
 import carpet.settings.SettingsManager;
+import carpet.tick.TickContext;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.entity.living.player.LocalClientPlayerEntity;
 
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtString;
+import net.minecraft.nbt.*;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.Condition;
@@ -27,12 +28,30 @@ public class ClientNetworkHandler {
 	public static Lock lockedClientPlayer = new ReentrantLock();
 	public static Condition clientPlayerLoaded = lockedClientPlayer.newCondition();
 
+	// NbtNumber is package-private, but I had to do an instanceof call with it
+	// At least I can do that reflectively
+	private static final Class<?> NBT_NUMBER = NbtInt.class.getSuperclass();
+	private static final Method GET_FLOAT;
+
+	static {
+		Method getFloat = null;
+		for (Method method : NBT_NUMBER.getDeclaredMethods()) {
+			if (method.getReturnType() == float.class && method.getParameterTypes().length == 0) {
+				getFloat = method; break;
+			}
+		}
+		if (getFloat != null) {
+			GET_FLOAT = getFloat;
+		} else {
+			throw new AssertionError("Unable to locate getFloat() in NbtNumber");
+		}
+	}
+
     static {
         dataHandlers.put(CarpetClient.HI, (p, t) -> onHi((NbtString) t));
         dataHandlers.put("Rules", (p, t) -> {
             NbtCompound ruleset = (NbtCompound) t;
-            for (Object k : ruleset.getKeys()) {
-				String ruleKey = (String) k;
+            for (String ruleKey : ruleset.getKeys()) {
 				NbtCompound ruleNBT = (NbtCompound) ruleset.get(ruleKey);
                 SettingsManager manager = null;
                 String ruleName;
@@ -63,6 +82,31 @@ public class ClientNetworkHandler {
                 }
             }
         });
+		dataHandlers.put("TickRate", (p, t) -> {
+			if (NBT_NUMBER.isAssignableFrom(t.getClass())) {
+				float tickRate;
+				try {
+					tickRate = (Float) GET_FLOAT.invoke(t, new Object[0]);
+				} catch (IllegalAccessException | InvocationTargetException e) {
+					throw new AssertionError(e);
+				}
+				TickContext.INSTANCE.nanosPerTick = (long) (1.0e9f / tickRate);
+			}
+		});
+		dataHandlers.put("TickingState", (p, t) -> {
+			if (!(t instanceof NbtCompound)) return;
+			// Who thought it would be a good idea to name one of the protocol keys
+			//  using lower camel and another using underscores
+			if (((NbtCompound) t).getBoolean("deepFreeze"))
+				TickContext.INSTANCE.frozen = TickContext.Freeze.DEEP;
+			else if (((NbtCompound) t).getBoolean("is_frozen"))
+				TickContext.INSTANCE.frozen = TickContext.Freeze.LIGHT;
+			else
+				TickContext.INSTANCE.frozen = TickContext.Freeze.NONE;
+		});
+		dataHandlers.put("SuperHotState", (p, t) -> {
+			TickContext.INSTANCE.superHot = ((t instanceof NbtByte) && ((NbtByte) t).getByte() > 0);
+		});
         dataHandlers.put("clientCommand", (p, t) -> CarpetClient.onClientCommand(t));
     }
 

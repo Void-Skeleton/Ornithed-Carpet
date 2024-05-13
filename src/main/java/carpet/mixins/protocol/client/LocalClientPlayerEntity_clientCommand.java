@@ -1,4 +1,4 @@
-package carpet.mixins.protocol;
+package carpet.mixins.protocol.client;
 
 import carpet.server.CarpetServer;
 import carpet.network.CarpetClient;
@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 //#else
 //$$ @Mixin(LocalClientPlayerEntity.class)
 //#endif
-public class LocalClientPlayerEntityMixin {
+public class LocalClientPlayerEntity_clientCommand {
 	//#if MC>10710
 	@Shadow
 	protected Minecraft minecraft;

@@ -5,7 +5,8 @@
 	"name": "${name}",
 	"description": "Ornithe Carpet",
 	"authors": [
-		"Kahzerx"
+		"Kahzerx",
+    "Void"
 	],
 	"contact": {
 		"homepage": "https://example.com/",
@@ -16,7 +17,7 @@
 	"environment": "*",
 	"entrypoints": {
     "preLaunch": [
-      "org.carpet.server.CarpetServer::onGameStarted"
+      "carpet.server.CarpetServer::onGameStarted"
     ]
 	},
 	"mixins": [

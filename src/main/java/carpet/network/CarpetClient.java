@@ -15,6 +15,8 @@ import net.minecraft.resource.Identifier;
 //#endif
 
 public class CarpetClient {
+	// Had I designed this protocol, I would have used the strings "114514" and "1919810"
+	// - Void, 2024/5/12
 	public static final String HI = "69";
 	public static final String HELLO = "420";
 	//#if MC>10710

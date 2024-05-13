@@ -1,5 +1,6 @@
 package carpet.mixins.protocol;
 
+import carpet.mixins.accessor.CustomPayloadC2SPacket_accessor;
 import carpet.network.CarpetClient;
 import carpet.network.ServerNetworkHandler;
 import net.minecraft.nbt.NbtCompound;
@@ -22,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 //#endif
 
 @Mixin(ServerPlayNetworkHandler.class)
-public class ServerPlayNetworkHandlerMixin {
+public class ServerPlayNetworkHandler_carpetPayload {
 	@Shadow
 	public ServerPlayerEntity player;
 

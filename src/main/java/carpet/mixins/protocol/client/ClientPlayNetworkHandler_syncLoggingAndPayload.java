@@ -1,4 +1,4 @@
-package carpet.mixins.protocol;
+package carpet.mixins.protocol.client;
 
 import carpet.network.CarpetClient;
 import carpet.network.ClientNetworkHandler;
@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 //#endif
 
 @Mixin(ClientPlayNetworkHandler.class)
-public class ClientPlayNetworkHandlerMixin {
+public class ClientPlayNetworkHandler_syncLoggingAndPayload {
 	@Shadow
 	private Minecraft minecraft;
 
