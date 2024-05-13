@@ -10,7 +10,7 @@ public enum TickPhase {
 	// Do NOT change the order! /////////
 	/////////////////////////////////////
 	SERVER_TICK_COUNT(false, false, "TC"),
-	INGAME_QUEUED_TASK(false, false, "QT"),
+	ASYNC_TASKS(false, false, "AT"),
 	CLIENT_TIME_SYNC(true, false, "CTS"),
 	WEATHER_UPDATE(true, false, "WU"),
 	HARDCODE_DIFFICULTY(true, false, "HDL"),
@@ -45,7 +45,7 @@ public enum TickPhase {
 	/////////////////////////////////////////
 	// Things below should be at the first //
 	/////////////////////////////////////////
-	SP_INITIAL_LOAD(false, false, "Init", 3),
+	SERVER_INITIALIZE(false, false, "Init", 2),
 	SP_SAVE_ON_PAUSE(false, false, "ASP", 1),
 	SP_TASK_ON_PAUSE(false, false, "QTP", 1),
 	/////////////////////////////////////////
@@ -59,6 +59,7 @@ public enum TickPhase {
 	public final String translationKey;
 	public final boolean singlePlayerOnly;
 	public final boolean looped;
+	public final TickPhase majorPhase;
 
 	TickPhase(boolean dimensional, boolean profiled, String acronym) {
 		this.dimensional = dimensional;
@@ -67,6 +68,7 @@ public enum TickPhase {
 		this.translationKey = TranslationKeys.TICK_STAGE + acronym;
 		this.singlePlayerOnly = false;
 		this.looped = true;
+		this.majorPhase = this;
 	}
 
 	TickPhase(boolean dimensional, boolean profiled, String acronym, int flags) {
@@ -76,5 +78,26 @@ public enum TickPhase {
 		this.translationKey = TranslationKeys.TICK_STAGE + acronym;
 		this.singlePlayerOnly = (flags & 1) != 0;
 		this.looped = (flags & 2) == 0;
+		this.majorPhase = this;
+	}
+
+	TickPhase(boolean dimensional, boolean profiled, String acronym, TickPhase majorPhase) {
+		this.dimensional = dimensional;
+		this.profiled = profiled;
+		this.acronym = acronym;
+		this.translationKey = TranslationKeys.TICK_STAGE + acronym;
+		this.singlePlayerOnly = false;
+		this.looped = true;
+		this.majorPhase = majorPhase;
+	}
+
+	TickPhase(boolean dimensional, boolean profiled, String acronym, int flags, TickPhase majorPhase) {
+		this.dimensional = dimensional;
+		this.profiled = profiled;
+		this.acronym = acronym;
+		this.translationKey = TranslationKeys.TICK_STAGE + acronym;
+		this.singlePlayerOnly = (flags & 1) != 0;
+		this.looped = (flags & 2) == 0;
+		this.majorPhase = majorPhase;
 	}
 }

@@ -77,7 +77,8 @@
     "protocol.client.Minecraft_disconnectClient",
     "rule.client.creativeNoClip.LocalClientPlayerEntity_creativeNoClip",
     "rule.client.creativeNoClip.WorldRenderer_creativeNoClip",
-    "rule.client.smoothClientAnimations.Minecraft_smoothClientAnimations"
+    "rule.client.smoothClientAnimations.Minecraft_smoothClientAnimations",
+    "tick.phase.client.IntegratedServer_swapPhase"
   ],
   "server": [
   ],

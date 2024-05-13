@@ -37,7 +37,8 @@ public class TickContext {
 	public int tickingDimension;
 	public TickPhase currentPhase;
 
-	public void swapTickingDimension(int newTickingDimension) {
+	public void swapTickingDimension(int dimensionId) {
+		int newTickingDimension = DIM_MAP[dimensionId + 1];
 		if (tickingDimension != newTickingDimension) {
 			if (profilingTickPhases) tickPhaseProfilers[tickingDimension].swap(null);
 			tickingDimension = newTickingDimension;
