@@ -1,5 +1,6 @@
 package carpet.tick;
 
+import carpet.network.ServerNetworkHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
@@ -18,6 +19,7 @@ public class TickContext {
 		warping = false;
 		frozen = Freeze.NONE;
 		superHot = false;
+		stepTick();
 	}
 	public static final TickContext INSTANCE = new TickContext();
 
@@ -29,6 +31,24 @@ public class TickContext {
 	public boolean warping;
 	public Freeze frozen;
 	public boolean superHot;
+
+	public void setTps(double tps) {
+		nanosPerTick = (long) (1e9 / tps);
+		accumulatedNanos = 0L;
+		stepTick();
+		ServerNetworkHandler.updateTickRate((float) tps);
+	}
+
+	private long accumulatedNanos = 0L;
+	private int millisThisTick = 0;
+	public int getMillisThisTick() {
+		return millisThisTick;
+	}
+	public void stepTick() {
+		accumulatedNanos += nanosPerTick;
+		millisThisTick = (int) (accumulatedNanos / 1000000L);
+		accumulatedNanos %= 1000000L;
+	}
 
 	// Tick phase context
 	// DIM_MAP[dimId + 1] = (0 = overworld, 1 = nether, 2 = end, 3 = canonical)

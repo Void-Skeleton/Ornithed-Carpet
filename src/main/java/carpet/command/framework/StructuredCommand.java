@@ -40,7 +40,7 @@ public class StructuredCommand<D extends StructuredCommandData> extends Abstract
 
 	@Override
 	public String getUsage(CommandSource source) {
-		return "";
+		return getName();
 	}
 
 	@Override

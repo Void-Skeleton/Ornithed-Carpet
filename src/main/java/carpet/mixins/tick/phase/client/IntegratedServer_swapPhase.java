@@ -27,9 +27,9 @@ public abstract class IntegratedServer_swapPhase {
 		CONTEXT.swapTickPhase(TickPhase.SP_DIFFICULTY_ALT);
 	}
 
-	@Inject(method = "tick", at = @At(value = "INVOKE_STRING",
+	@Inject(method = "tick", at = @At(value = "INVOKE",
 		target = "Lorg/apache/logging/log4j/Logger;info(Ljava/lang/String;)V",
-		args = "ldc=Saving and pausing game..."))
+		args = "ldc=Saving and pausing game...", remap = false))
 	public void swapToSaveOnPause(CallbackInfo ci) {
 		CONTEXT.swapTickPhase(TickPhase.SP_SAVE_ON_PAUSE);
 	}

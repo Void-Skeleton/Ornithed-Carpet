@@ -7,10 +7,7 @@ import carpet.settings.rule.CarpetRule;
 import carpet.settings.rule.RuleHelper;
 import com.mojang.authlib.GameProfile;
 import io.netty.buffer.Unpooled;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtString;
+import net.minecraft.nbt.*;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
 import net.minecraft.server.MinecraftServer;
@@ -250,7 +247,7 @@ public class ServerNetworkHandler {
         }
     }
 
-    public static void updateRuleWithConnectedClients(CarpetRule<?> rule) {
+    public static void updateRule(CarpetRule<?> rule) {
 //        if (CarpetSettings.superSecretSetting) {  // TODO
 //            return;
 //        }
@@ -258,6 +255,12 @@ public class ServerNetworkHandler {
             player.networkHandler.sendPacket(DataBuilder.create(player.server).withRule(rule).build());
         }
     }
+
+	public static void updateTickRate(float tps) {
+		for (ServerPlayerEntity player : remoteCarpetPlayers.keySet()) {
+			player.networkHandler.sendPacket(DataBuilder.create(player.server).withTickRate(tps).build());
+		}
+	}
 
     public static void broadcastCustomCommand(String command, NbtElement data) {
 //        if (CarpetSettings.superSecretSetting) {  // TODO
@@ -302,16 +305,16 @@ public class ServerNetworkHandler {
         // unused now, but hey
         private MinecraftServer server;
 
-        private static DataBuilder create(final MinecraftServer server) {
+        public static DataBuilder create(final MinecraftServer server) {
             return new DataBuilder(server);
         }
 
-        private DataBuilder(MinecraftServer server) {
+        public DataBuilder(MinecraftServer server) {
             tag = new NbtCompound();
             this.server = server;
         }
 
-        private DataBuilder withRule(CarpetRule<?> rule) {
+        public DataBuilder withRule(CarpetRule<?> rule) {
 			NbtCompound rules = (NbtCompound) tag.get("Rules");
             if (rules == null) {
                 rules = new NbtCompound();
@@ -329,6 +332,11 @@ public class ServerNetworkHandler {
             rules.put(key, ruleNBT);
             return this;
         }
+
+		public DataBuilder withTickRate(float tps) {
+			tag.putFloat("TickRate", tps);
+			return this;
+		}
 
         public DataBuilder withCustomNbt(String key, NbtElement value) {
             tag.put(key, value);

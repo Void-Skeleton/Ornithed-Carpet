@@ -1,6 +1,7 @@
 package carpet.server;
 
 import carpet.command.CarpetCommand;
+import carpet.command.TickCommand;
 import carpet.settings.CarpetSettings;
 import carpet.settings.SettingsManager;
 import carpet.network.ServerNetworkHandler;
@@ -51,6 +52,7 @@ public class CarpetServer {
 		//#else
 		registry.register(new CarpetCommand(settingsManager));
 		//#endif
+		registry.register(new TickCommand());
 	}
 
 	public static void onPlayerLoggedIn(ServerPlayerEntity player) {

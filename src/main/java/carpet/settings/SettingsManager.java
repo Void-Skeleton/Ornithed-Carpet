@@ -3,7 +3,6 @@ package carpet.settings;
 import com.google.common.collect.Sets;
 import carpet.network.ServerNetworkHandler;
 import carpet.settings.rule.*;
-import carpet.utils.CommandHelper;
 import carpet.utils.Messenger;
 import carpet.utils.TranslationKeys;
 import carpet.utils.Translations;
@@ -24,10 +23,7 @@ import java.nio.file.Path;
 //$$ import java.util.concurrent.CompletableFuture;
 //$$ import java.util.stream.Stream;
 //#else
-import net.minecraft.server.command.AbstractCommand;
-import net.minecraft.server.command.exception.CommandException;
 import net.minecraft.server.command.source.CommandSource;
-import com.google.common.collect.Iterables;
 //#endif
 //#if MC<=10710
 //$$ import net.minecraft.server.command.Command;
@@ -40,8 +36,6 @@ import net.minecraft.server.MinecraftServer;
 //$$ import net.minecraft.server.command.handler.CommandManager;
 //$$ import net.minecraft.server.command.source.CommandSourceStack;
 //#else
-import net.minecraft.util.math.BlockPos;
-import org.jetbrains.annotations.Nullable;
 //#endif
 import net.minecraft.text.Text;
 
@@ -578,7 +572,7 @@ public class SettingsManager {
 	//#endif
 		observers.forEach(observer -> observer.ruleChanged(source, rule, userInput));
 		staticObservers.forEach(observer -> observer.ruleChanged(source, rule, userInput));
-		ServerNetworkHandler.updateRuleWithConnectedClients(rule);
+		ServerNetworkHandler.updateRule(rule);
 	}
 
 	static class ConfigReadResult {

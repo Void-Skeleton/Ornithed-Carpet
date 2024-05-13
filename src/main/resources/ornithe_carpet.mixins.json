@@ -69,7 +69,8 @@
     "tick.phase.ServerWorld_swapPhase",
     "tick.phase.World_swapPhase",
     "tick.profile.ServerWorld_profile",
-    "tick.profile.World_profile"
+    "tick.profile.World_profile",
+    "tick.rate.MinecraftServer_tickRate"
   ],
   "client": [
     "protocol.client.ClientPlayNetworkHandler_syncLoggingAndPayload",
@@ -78,7 +79,8 @@
     "rule.client.creativeNoClip.LocalClientPlayerEntity_creativeNoClip",
     "rule.client.creativeNoClip.WorldRenderer_creativeNoClip",
     "rule.client.smoothClientAnimations.Minecraft_smoothClientAnimations",
-    "tick.phase.client.IntegratedServer_swapPhase"
+    "tick.phase.client.IntegratedServer_swapPhase",
+    "tick.rate.client.TickTimer_tickRate"
   ],
   "server": [
   ],
