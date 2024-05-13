@@ -24,7 +24,7 @@ public abstract class ServerWorld_freeze extends World implements BlockableEvent
 	}
 
 	@Unique
-	private static final TickContext CONTEXT = TickContext.SERVER_CONTEXT;
+	private static final TickContext CONTEXT = TickContext.INSTANCE;
 
 	// I love you MixinExtras, I love you LlamaLad7
 	// If I don't have that handy WrapOperation thingy I would have to use Overwrite

@@ -15,9 +15,9 @@ public interface TickCommandData extends StructuredCommandData<AbstractCommand> 
 		FREEZE {
 			@Override
 			public boolean run(MinecraftServer server, CommandSource source) {
-				TickContext.SERVER_CONTEXT.flipFreezeState();
-				Messenger.m(source, "w " + (TickContext.SERVER_CONTEXT.frozen ?
-					"Frozen" : "Unfrozen") + " the server tick loop");
+				TickContext.INSTANCE.flipFreezeState();
+				Messenger.m(source, "w " + (TickContext.INSTANCE.frozen ?
+					"Froze" : "Unfroze") + " the server tick loop");
 				return true;
 			}
 		};
@@ -33,7 +33,7 @@ public interface TickCommandData extends StructuredCommandData<AbstractCommand> 
 		RATE {
 			@Override
 			public boolean run(MinecraftServer server, CommandSource source, double value) {
-				TickContext.SERVER_CONTEXT.setTps(value);
+				TickContext.INSTANCE.setTps(value);
 				Messenger.m(source, "w Tick rate is " + value);
 				return true;
 			}

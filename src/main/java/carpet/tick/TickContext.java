@@ -1,8 +1,6 @@
 package carpet.tick;
 
 import carpet.network.ServerNetworkHandler;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
@@ -23,9 +21,7 @@ public class TickContext {
 		superHot = false;
 		stepTick();
 	}
-	public static final TickContext SERVER_CONTEXT = new TickContext();
-	@Environment(EnvType.CLIENT)
-	public static final TickContext CLIENT_CONTEXT = new TickContext();
+	public static final TickContext INSTANCE = new TickContext();
 
 	// Tick rate context
 	public long nanosPerTick;

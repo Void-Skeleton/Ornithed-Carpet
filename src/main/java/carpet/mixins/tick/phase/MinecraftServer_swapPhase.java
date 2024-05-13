@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServer_swapPhase {
 	@Unique
-	private static final TickContext CONTEXT = TickContext.SERVER_CONTEXT;
+	private static final TickContext CONTEXT = TickContext.INSTANCE;
 
 	@Inject(method = "loadWorld", at = @At("HEAD"))
 	public void swapToInitialLoad(String saveName, String name, long seed, WorldGeneratorType generatorType, String generatorOptions, CallbackInfo ci) {

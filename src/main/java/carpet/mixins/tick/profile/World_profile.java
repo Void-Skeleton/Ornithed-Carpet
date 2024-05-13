@@ -24,7 +24,7 @@ public abstract class World_profile implements WorldView {
 	@Redirect(method = "neighborChanged", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/state/BlockState;neighborChanged(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/Block;Lnet/minecraft/util/math/BlockPos;)V"))
 	public void profileNeighborUpdates(BlockState instance, World world, BlockPos blockPos, Block neighborBlock, BlockPos neighborPos) {
 		if (TickContext.profilingNeighborUpdates && !isClient) {
-			TypedProfiler<Block> profiler = TickContext.SERVER_CONTEXT.updateProfiler;
+			TypedProfiler<Block> profiler = TickContext.INSTANCE.updateProfiler;
 			profiler.swap(instance.getBlock());
 			instance.neighborChanged(world, blockPos, neighborBlock, neighborPos);
 			profiler.swap(null);
@@ -35,7 +35,7 @@ public abstract class World_profile implements WorldView {
 		target = "Lnet/minecraft/entity/Entity;tick()V"))
 	public void profileGlobalEntities(Entity instance) {
 		if (TickContext.profilingEntities && !isClient) {
-			TypedProfiler<Class<? extends Entity>> profiler = TickContext.SERVER_CONTEXT.entityProfiler;
+			TypedProfiler<Class<? extends Entity>> profiler = TickContext.INSTANCE.entityProfiler;
 			profiler.swap(instance.getClass());
 			instance.tick();
 			profiler.swap(null);
@@ -46,7 +46,7 @@ public abstract class World_profile implements WorldView {
 		target = "Lnet/minecraft/world/World;tickEntity(Lnet/minecraft/entity/Entity;)V"))
 	public void profileEntities(World instance, Entity entity) {
 		if (TickContext.profilingEntities && !isClient) {
-			TypedProfiler<Class<? extends Entity>> profiler = TickContext.SERVER_CONTEXT.entityProfiler;
+			TypedProfiler<Class<? extends Entity>> profiler = TickContext.INSTANCE.entityProfiler;
 			profiler.swap(entity.getClass());
 			instance.tickEntity(entity);
 			profiler.swap(null);
@@ -57,7 +57,7 @@ public abstract class World_profile implements WorldView {
 		target = "Lnet/minecraft/util/Tickable;tick()V"))
 	public void profileBlockEntities(Tickable instance) {
 		if (TickContext.profilingBlockEntities && !isClient) {
-			TypedProfiler<Class<? extends BlockEntity>> profiler = TickContext.SERVER_CONTEXT.blockEntityProfiler;
+			TypedProfiler<Class<? extends BlockEntity>> profiler = TickContext.INSTANCE.blockEntityProfiler;
 			BlockEntity blockEntity = (BlockEntity) instance;
 			profiler.swap(blockEntity.getClass());
 			instance.tick();

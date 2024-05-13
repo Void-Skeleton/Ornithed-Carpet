@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(IntegratedServer.class)
 public abstract class IntegratedServer_swapPhase {
 	@Unique
-	private static final TickContext CONTEXT = TickContext.SERVER_CONTEXT;
+	private static final TickContext CONTEXT = TickContext.INSTANCE;
 
 	@Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/PlayerManager;updateViewDistance(I)V"))
 	public void swapToViewDistanceAlteration(CallbackInfo ci) {

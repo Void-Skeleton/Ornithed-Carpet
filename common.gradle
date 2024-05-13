@@ -5,6 +5,14 @@ apply plugin: 'com.replaymod.preprocess'
 
 int mcVersion = project.mcVersion
 
+loom {
+	runs {
+		client {
+			vmArgs "-Dmixin.debug=true"
+		}
+	}
+}
+
 preprocess {
 	tabIndentation = false
 }

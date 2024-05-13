@@ -160,17 +160,17 @@ public class StructuredAdtMatcher<T> extends AbstractAdtMatcher<T> {
 				fieldProgress = -1;
 				stringProgress = -1;
 				modified = true;
-				if (index == firstNonFailure) {
-					structuralFailures ++;
-					if (structuralFailures != branches)
-						while (stringProgresses[++ firstNonFailure] != -1);
-				}
 			}
 			break;
 		}
 		if (modified) {
 			stringProgresses[index] = stringProgress;
 			fieldProgresses[index] = fieldProgress;
+			if (stringProgress == -1) {
+				structuralFailures ++;
+				if (index == firstNonFailure && structuralFailures != branches)
+					while (stringProgresses[firstNonFailure] == -1) firstNonFailure ++;
+			}
 		}
 	}
 

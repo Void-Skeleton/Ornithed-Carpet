@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerWorld.class)
 public abstract class ServerWorld_swapPhase extends World implements BlockableEventLoop {
 	@Unique
-	private static final TickContext CONTEXT = TickContext.SERVER_CONTEXT;
+	private static final TickContext CONTEXT = TickContext.INSTANCE;
 
 	protected ServerWorld_swapPhase(WorldStorage storage, WorldData data, Dimension dimension, Profiler profiler, boolean isClient) {
 		super(storage, data, dimension, profiler, isClient);

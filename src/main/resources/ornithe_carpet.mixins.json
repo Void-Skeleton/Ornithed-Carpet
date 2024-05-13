@@ -67,6 +67,7 @@
     "server.ServerPlayNetworkHandler_syncToCarpet",
     "tick.freeze.MinecraftServer_freeze",
     "tick.freeze.ServerWorld_freeze",
+    "tick.freeze.client.World_freeze",
     "tick.phase.MinecraftServer_swapPhase",
     "tick.phase.ServerWorld_swapPhase",
     "tick.phase.World_swapPhase",
@@ -80,7 +81,7 @@
     "protocol.client.Minecraft_disconnectClient",
     "rule.client.creativeNoClip.LocalClientPlayerEntity_creativeNoClip",
     "rule.client.creativeNoClip.WorldRenderer_creativeNoClip",
-    "tick.freeze.client.Minecraft_freeze",
+    "tick.freeze.client.WorldRenderer_disableInterpolation",
     "tick.phase.client.IntegratedServer_swapPhase",
     "tick.rate.client.TickTimer_tickRate"
   ],

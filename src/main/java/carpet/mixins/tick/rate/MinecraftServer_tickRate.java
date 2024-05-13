@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServer_tickRate {
 	@Unique
-	private static TickContext CONTEXT = TickContext.SERVER_CONTEXT;
+	private static TickContext CONTEXT = TickContext.INSTANCE;
 
 	@Inject(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;tick()V"))
 	public void stepTick(CallbackInfo ci) {

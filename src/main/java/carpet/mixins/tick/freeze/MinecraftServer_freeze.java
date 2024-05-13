@@ -2,17 +2,16 @@ package carpet.mixins.tick.freeze;
 
 import carpet.tick.TickContext;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import jdk.internal.org.objectweb.asm.Opcodes;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(MinecraftServer.class)
+@Mixin(value = MinecraftServer.class, priority = 100)
 public abstract class MinecraftServer_freeze {
 	@Unique
-	private static final TickContext CONTEXT = TickContext.SERVER_CONTEXT;
+	private static final TickContext CONTEXT = TickContext.INSTANCE;
 
 	@WrapWithCondition(method = "tick", at = @At(value = "FIELD",
 		target = "Lnet/minecraft/server/MinecraftServer;ticks:I", opcode = 181 /* PUTFIELD */))

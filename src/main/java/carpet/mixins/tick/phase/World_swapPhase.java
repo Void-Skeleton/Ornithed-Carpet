@@ -18,7 +18,7 @@ public abstract class World_swapPhase implements WorldView {
 	public boolean isClient;
 
 	@Unique
-	private static final TickContext CONTEXT = TickContext.SERVER_CONTEXT;
+	private static final TickContext CONTEXT = TickContext.INSTANCE;
 
 	@Inject(method = "tickWeather", at = @At("HEAD"))
 	public void swapToWeatherUpdate(CallbackInfo ci) {

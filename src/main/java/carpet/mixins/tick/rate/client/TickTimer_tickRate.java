@@ -17,7 +17,7 @@ public abstract class TickTimer_tickRate {
 	@Inject(method = "advance", at = @At("HEAD"))
 	public void advance(CallbackInfo ci) {
 		if (CarpetSettings.smoothClientAnimations)
-			this.mspt = TickContext.CLIENT_CONTEXT.nanosPerTick / 1e6f;
+			this.mspt = TickContext.INSTANCE.nanosPerTick / 1e6f;
 		else
 			this.mspt = 50.0f;
 	}
