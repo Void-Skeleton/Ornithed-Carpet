@@ -90,22 +90,20 @@ public class ClientNetworkHandler {
 				} catch (IllegalAccessException | InvocationTargetException e) {
 					throw new AssertionError(e);
 				}
-				TickContext.INSTANCE.nanosPerTick = (long) (1.0e9f / tickRate);
+				TickContext.CLIENT_CONTEXT.nanosPerTick = (long) (1.0e9f / tickRate);
 			}
 		});
 		dataHandlers.put("TickingState", (p, t) -> {
 			if (!(t instanceof NbtCompound)) return;
 			// Who thought it would be a good idea to name one of the protocol keys
 			//  using lower camel and another using underscores
-			if (((NbtCompound) t).getBoolean("deepFreeze"))
-				TickContext.INSTANCE.frozen = TickContext.Freeze.DEEP;
-			else if (((NbtCompound) t).getBoolean("is_frozen"))
-				TickContext.INSTANCE.frozen = TickContext.Freeze.LIGHT;
-			else
-				TickContext.INSTANCE.frozen = TickContext.Freeze.NONE;
+			// Old fabric carpet use deepFreeze to freeze chunk ticket expiry
+			// This is 1.12 with no chunk tickets, so no
+			if (((NbtCompound) t).getBoolean("deepFreeze"));
+			TickContext.CLIENT_CONTEXT.frozen = (boolean) ((NbtCompound) t).getBoolean("is_frozen");
 		});
 		dataHandlers.put("SuperHotState", (p, t) -> {
-			TickContext.INSTANCE.superHot = ((t instanceof NbtByte) && ((NbtByte) t).getByte() > 0);
+			TickContext.CLIENT_CONTEXT.superHot = ((t instanceof NbtByte) && ((NbtByte) t).getByte() > 0);
 		});
         dataHandlers.put("clientCommand", (p, t) -> CarpetClient.onClientCommand(t));
     }

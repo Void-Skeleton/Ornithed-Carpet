@@ -262,6 +262,12 @@ public class ServerNetworkHandler {
 		}
 	}
 
+	public static void updateFrozenState(boolean frozen) {
+		for (ServerPlayerEntity player : remoteCarpetPlayers.keySet()) {
+			player.networkHandler.sendPacket(DataBuilder.create(player.server).withFrozenState(frozen).build());
+		}
+	}
+
     public static void broadcastCustomCommand(String command, NbtElement data) {
 //        if (CarpetSettings.superSecretSetting) {  // TODO
 //            return;
@@ -335,6 +341,14 @@ public class ServerNetworkHandler {
 
 		public DataBuilder withTickRate(float tps) {
 			tag.putFloat("TickRate", tps);
+			return this;
+		}
+
+		public DataBuilder withFrozenState(boolean frozen) {
+			NbtCompound freezeCompound = new NbtCompound();
+			freezeCompound.putBoolean("is_frozen", frozen);
+			freezeCompound.putBoolean("deepFreeze", false);
+			tag.put("TickingState", freezeCompound);
 			return this;
 		}
 

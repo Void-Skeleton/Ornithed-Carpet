@@ -1,5 +1,6 @@
 package carpet.mixins.tick.rate.client;
 
+import carpet.settings.CarpetSettings;
 import carpet.tick.TickContext;
 import net.minecraft.client.TickTimer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,7 +16,9 @@ public abstract class TickTimer_tickRate {
 
 	@Inject(method = "advance", at = @At("HEAD"))
 	public void advance(CallbackInfo ci) {
-		this.mspt = TickContext.INSTANCE.nanosPerTick / 1e6f;
-
+		if (CarpetSettings.smoothClientAnimations)
+			this.mspt = TickContext.CLIENT_CONTEXT.nanosPerTick / 1e6f;
+		else
+			this.mspt = 50.0f;
 	}
 }

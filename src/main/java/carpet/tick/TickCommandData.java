@@ -9,18 +9,32 @@ import carpet.command.framework.StructuredCommandData;
 import net.minecraft.server.command.exception.CommandException;
 import net.minecraft.server.command.source.CommandSource;
 
-@Algebraic(TickCommandData.Unary.class)
+@Algebraic({TickCommandData.NullaryData.class, TickCommandData.UnaryData.class})
 public interface TickCommandData extends StructuredCommandData<AbstractCommand> {
 	enum NullaryOption {
-		ENTITIES, FREEZE, HEALTH, QUERY, STEP, WARP
+		FREEZE {
+			@Override
+			public boolean run(MinecraftServer server, CommandSource source) {
+				TickContext.SERVER_CONTEXT.flipFreezeState();
+				Messenger.m(source, "w " + (TickContext.SERVER_CONTEXT.frozen ?
+					"Frozen" : "Unfrozen") + " the server tick loop");
+				return true;
+			}
+		};
+		private final String name = name().toLowerCase();
+		public abstract boolean run(MinecraftServer server, CommandSource source);
+		@Override
+		public String toString() {
+			return name;
+		}
 	}
 
 	enum UnaryOption {
 		RATE {
 			@Override
 			public boolean run(MinecraftServer server, CommandSource source, double value) {
-				Messenger.m(source, "w Tick rate is {}", value);
-				TickContext.INSTANCE.setTps(value);
+				TickContext.SERVER_CONTEXT.setTps(value);
+				Messenger.m(source, "w Tick rate is " + value);
 				return true;
 			}
 		};
@@ -34,7 +48,16 @@ public interface TickCommandData extends StructuredCommandData<AbstractCommand> 
 		}
 	}
 
-	class Unary implements TickCommandData {
+	class NullaryData implements TickCommandData {
+		@MatchWith private NullaryOption option;
+
+		@Override
+		public void run(AbstractCommand command, MinecraftServer server, CommandSource source) throws CommandException {
+			option.run(server, source);
+		}
+	}
+
+	class UnaryData implements TickCommandData {
 		@MatchWith private UnaryOption option;
 		@MatchWith private double value;
 

@@ -3,7 +3,6 @@ package carpet.mixins.tick.phase.client;
 import carpet.tick.TickContext;
 import carpet.tick.TickPhase;
 import net.minecraft.server.integrated.IntegratedServer;
-import net.minecraft.world.gen.WorldGeneratorType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(IntegratedServer.class)
 public abstract class IntegratedServer_swapPhase {
 	@Unique
-	private static final TickContext CONTEXT = TickContext.INSTANCE;
+	private static final TickContext CONTEXT = TickContext.SERVER_CONTEXT;
 
 	@Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/PlayerManager;updateViewDistance(I)V"))
 	public void swapToViewDistanceAlteration(CallbackInfo ci) {

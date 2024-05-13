@@ -24,7 +24,7 @@
 		"ornithe_carpet.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.14.24",
+		"fabricloader": ">=0.15",
 		"minecraft": "${minecraft_dependency}"
 	}
 }

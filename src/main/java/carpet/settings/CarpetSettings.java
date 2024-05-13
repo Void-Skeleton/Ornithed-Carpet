@@ -146,6 +146,12 @@ public class CarpetSettings {
 	)
 	public static boolean creativeNoClip = false;
 
+	@Rule(
+		desc = "Make client animations smooth for /tick rate and /tick freeze",
+		categories = RuleCategory.CLIENT
+	)
+	public static boolean smoothClientAnimations = false;
+
 	/*
 		 _____  _   _  _____
 		|_   _|| \ | ||_   _|

@@ -591,7 +591,6 @@ public class SettingsManager {
 			return locked;
 		}
 	}
-	//#endif
 
 
 	public String getFancyName() {

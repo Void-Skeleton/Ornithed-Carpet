@@ -1,6 +1,8 @@
 package carpet.tick;
 
 import carpet.network.ServerNetworkHandler;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
@@ -17,19 +19,18 @@ public class TickContext {
 	private TickContext() {
 		nanosPerTick = 50 * 1000 * 1000;
 		warping = false;
-		frozen = Freeze.NONE;
+		frozen = false;
 		superHot = false;
 		stepTick();
 	}
-	public static final TickContext INSTANCE = new TickContext();
+	public static final TickContext SERVER_CONTEXT = new TickContext();
+	@Environment(EnvType.CLIENT)
+	public static final TickContext CLIENT_CONTEXT = new TickContext();
 
 	// Tick rate context
-	public enum Freeze {
-		NONE, LIGHT, DEEP
-	}
 	public long nanosPerTick;
 	public boolean warping;
-	public Freeze frozen;
+	public boolean frozen;
 	public boolean superHot;
 
 	public void setTps(double tps) {
@@ -37,6 +38,10 @@ public class TickContext {
 		accumulatedNanos = 0L;
 		stepTick();
 		ServerNetworkHandler.updateTickRate((float) tps);
+	}
+	public void flipFreezeState() {
+		frozen = !frozen;
+		ServerNetworkHandler.updateFrozenState(frozen);
 	}
 
 	private long accumulatedNanos = 0L;
