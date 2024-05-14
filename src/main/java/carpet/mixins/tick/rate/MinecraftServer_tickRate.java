@@ -15,7 +15,7 @@ public abstract class MinecraftServer_tickRate {
 
 	@Inject(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/MinecraftServer;tick()V"))
 	public void stepTick(CallbackInfo ci) {
-		CONTEXT.stepTick();
+		CONTEXT.tickTimer();
 	}
 
 	@ModifyConstant(method = "run", constant = @Constant(longValue = 2000L))

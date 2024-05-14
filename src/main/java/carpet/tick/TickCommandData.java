@@ -37,11 +37,27 @@ public interface TickCommandData extends StructuredCommandData<AbstractCommand> 
 				Messenger.m(source, "w Tick rate is " + value);
 				return true;
 			}
+		}, STEP {
+			@Override
+			public boolean run(MinecraftServer server, CommandSource source, double value) {
+				TickContext context = TickContext.INSTANCE;
+				if (context.frozen) {
+					if (context.remainingTicks > 0) {
+						Messenger.m(source, "w Already stepping ticks!");
+					} else if (value >= 0) {
+						context.remainingTicks = (int) value;
+						Messenger.m(source, "w Stepping " + ((int) value) + " ticks");
+					} else {
+						Messenger.m(source, "w Please enter a nonnegative number!");
+					}
+				} else {
+					Messenger.m(source, " w You can only step ticks when frozen!");
+				}
+				return true;
+			}
 		};
 		private final String name = name().toLowerCase();
-		public boolean run(MinecraftServer server, CommandSource source, double value) {
-			return true;
-		}
+		public abstract boolean run(MinecraftServer server, CommandSource source, double value);
 		@Override
 		public String toString() {
 			return name;

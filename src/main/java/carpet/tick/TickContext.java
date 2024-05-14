@@ -19,33 +19,49 @@ public class TickContext {
 		warping = false;
 		frozen = false;
 		superHot = false;
-		stepTick();
+		tickTimer();
 	}
 	public static final TickContext INSTANCE = new TickContext();
 
 	// Tick rate context
 	public long nanosPerTick;
 	public boolean warping;
+	// -1 = regularly running
+	// 0  = frozen
+	// >0 = freeze after that many ticks
+	public int remainingTicks = 0;
 	public boolean frozen;
 	public boolean superHot;
 
 	public void setTps(double tps) {
 		nanosPerTick = (long) (1e9 / tps);
 		accumulatedNanos = 0L;
-		stepTick();
+		tickTimer();
 		ServerNetworkHandler.updateTickRate((float) tps);
 	}
-	public void flipFreezeState() {
-		frozen = !frozen;
-		ServerNetworkHandler.updateFrozenState(frozen);
+	public void setFrozen(boolean frozen) {
+		boolean flag = this.frozen != frozen;
+		this.frozen = frozen;
+		if (flag) ServerNetworkHandler.updateFrozenState(frozen);
 	}
+	public void flipFreezeState() {
+		setFrozen(!frozen);
+	}
+	public void preTickFreezer() {
+		setFrozen(remainingTicks == 0);
+	}
+	public void postTickFreezer() {
+		if (remainingTicks > 0) -- remainingTicks;
+		setFrozen(remainingTicks == 0);
+	}
+
 
 	private long accumulatedNanos = 0L;
 	private int millisThisTick = 0;
 	public int getMillisThisTick() {
 		return millisThisTick;
 	}
-	public void stepTick() {
+	public void tickTimer() {
 		accumulatedNanos += nanosPerTick;
 		millisThisTick = (int) (accumulatedNanos / 1000000L);
 		accumulatedNanos %= 1000000L;
